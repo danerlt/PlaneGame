@@ -191,7 +191,7 @@ to {
         //按下键盘时将myplan对应的属性改为true
 		window.onkeydown = function(event){
 			switch(event.keyCode){
-                case 88:myplan.fire = true;//
+                case 88:myplan.fire = true;//x键 
                 break;
 				case 90:myplan.rotateLeft=true;//Z键 向左旋转
 				break;
@@ -451,7 +451,7 @@ to {
 
 				if(myplan){
 					ctx.fillStyle="#FFF"
-					ctx.font="18px 微软雅黑";
+					ctx.font="14px 微软雅黑";
 					ctx.textAlign = "left";
 					ctx.textBaseline = "middle";
 					ctx.fillText("Level:"+(myplan.fireLevel===4?"Max":myplan.fireLevel)+"        Speed:"+((80-myplan.firePerFrame)===70?"Max":(80-myplan.firePerFrame)) , 0 , canvas.height-18);
