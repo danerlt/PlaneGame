@@ -52,17 +52,17 @@
 	font:20px "微软雅黑";
 	display:none;
 }
-#gameStart {
+#menu {
 	position:absolute;
 	width:100%;
-	height:90px;
+	height:400px;
 	text-align:center;
 	color:#FFF;
 	font:20px "微软雅黑";
 	top:110px;
 	display:none;
 }
-.menu {
+.menuItem {
 	display:inline-block;
 	width:180px;
 	height:60px;
@@ -73,7 +73,7 @@
 	border-radius:10px;
 	border:5px solid #FFF;
 }
-#gameStart #gs-start:hover {
+#menu #gs-start:hover {
 	color:#f00;
 }
 .showSomething {
@@ -132,12 +132,11 @@ to {
 </head>
 <body>
 	<div class="game">
-		<div id="gameStart">
-		<span class="menu" id="gs-start">游戏开始</span><br><br>
-		<span class="menu">最高属性</span><br><br>
-		<span class="menu">超神属性</span><br><br>
-		<span class="menu">全范围</span><br><br>
-		<span class="menu">OMG!!!</span><br><br>
+		<div id="menu">
+		<span class="menuItem" id="gs-start">游戏开始</span><br><br>
+		<span class="menuItem">最高属性</span><br><br>
+		<span class="menuItem">超神属性</span><br><br>
+		<span class="menuItem">全范围</span><br><br>
 		
 		<span>游戏说明：方向键移动，按“Z”“C”键旋转飞机</span>
 		</div>
@@ -165,9 +164,10 @@ to {
 		var img = new Image(),
 			boomDom = document.getElementById("booms"),
 			missleDom = document.getElementById("missle"),
-			gS = document.getElementById("gameStart"),
-			gss = document.getElementById("gs-start");
-
+			gS = document.getElementById("menu"),//获取主菜单
+			gss = document.getElementById("gs-start");//获取开始游戏
+			
+        //获取requestAnimationFrame
 		window.RAF = (function(){
 			return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {window.setTimeout(callback, 1000 / 60); };
 		})();
@@ -178,39 +178,41 @@ to {
 			}
 		}
 
-		var sprites = [],
-			missles = [],
-			booms = [],
-			badPlanNum = 30,
+		var sprites = [],//精灵表
+			missles = [],//子弹
+			booms = [],//爆炸
+			badPlanNum = 30,//敌机数量
 			point = 0,
-			myplan = null,
-			eatfood = null,
-			foodDate = null,
-			dieNum = 0;
-
+			myplan = null,//我方飞机
+			eatfood = null,//
+			foodDate = null,//
+			dieNum = 0;//死亡次数
+			
+        //按下键盘时将myplan对应的属性改为true
 		window.onkeydown = function(event){
 			switch(event.keyCode){
-                   //case 88:myplan.fire = true;
-                    //break;
-				case 90:myplan.rotateLeft=true;
+                case 88:myplan.fire = true;//x键 
+                break;
+				case 90:myplan.rotateLeft=true;//Z键 向左旋转
 				break;
-				case 67:myplan.rotateRight=true;
+				case 67:myplan.rotateRight=true;//C键 向右旋转
 				break;
-				case 37:myplan.toLeft = true;
+				case 37:myplan.toLeft = true;//左
 				break;
-				case 38:myplan.toTop = true;
+				case 38:myplan.toTop = true;//上
 				break;
-				case 39:myplan.toRight = true;
+				case 39:myplan.toRight = true;//右
 				break;
-				case 40:myplan.toBottom = true;
+				case 40:myplan.toBottom = true;//下
 				break;
 			}
 		}
-
+        
+		//松开键盘时将myplan对应的属性改为false
 		window.onkeyup = function(event){
 			switch(event.keyCode){
-                    //case 88:myplan.fire = false;
-                    //break;
+                    case 88:myplan.fire = false;
+                    break;
 				case 90:myplan.rotateLeft=false;
 				break;
 				case 67:myplan.rotateRight=false;
@@ -225,7 +227,8 @@ to {
 				break;
 			}
 		}
-
+        
+        //最高属性		
 		document.getElementById("god").onclick = function(){
 			if(myplan){
 				myplan.god = true;
@@ -233,6 +236,8 @@ to {
 				myplan.firePerFrame = 10;
 			}
 		}
+		
+		//超神属性
 		document.getElementById("verygod").onclick = function(){
 			if(myplan){
 				myplan.god = true;
@@ -240,6 +245,8 @@ to {
 				myplan.firePerFrame = 10;
 			}
 		}
+		
+		//
 		document.getElementById("pretygod").onclick = function(){
 			if(myplan){
 				myplan.god = true;
@@ -247,6 +254,8 @@ to {
 				myplan.firePerFrame = 50;
 			}
 		}
+		
+		//
 		document.getElementById("nogod").onclick = function(){
 			if(myplan){
 				myplan.god = true;
@@ -255,6 +264,7 @@ to {
 			}
 		}
 
+	    //飞机爆炸            	      
 		function boom(plan){
 			for(var j=0;j<booms.length;j++){
 				if(!booms[j].visible){
@@ -273,7 +283,16 @@ to {
 				}
 			}
 		}
-
+        
+        /**
+		*  舞台
+		*  init() 
+		*  addElement() 
+		*  myplanReborn()
+		*  update()
+		*  loop()
+		*  start()
+		*/
 		var stage = {
 			init:function(){
 				var _this = this;
@@ -432,7 +451,7 @@ to {
 
 				if(myplan){
 					ctx.fillStyle="#FFF"
-					ctx.font="18px 微软雅黑";
+					ctx.font="14px 微软雅黑";
 					ctx.textAlign = "left";
 					ctx.textBaseline = "middle";
 					ctx.fillText("Level:"+(myplan.fireLevel===4?"Max":myplan.fireLevel)+"        Speed:"+((80-myplan.firePerFrame)===70?"Max":(80-myplan.firePerFrame)) , 0 , canvas.height-18);
