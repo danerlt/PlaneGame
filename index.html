@@ -3,11 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<style>
+	*{
+	  padding:0px;
+	  margin:0px;
+	}
 	body {
-	padding:0px;
-	margin:0px;
-	overflow:hidden;
-}
+	  overflow:hidden;
+    }
 #cas {
 	display:block;
 	border:1px solid;
@@ -30,11 +32,12 @@
 }
 .movebg {
 	width:100%;
-	height:200%;
+	height:210%;
 	background:url(image/bg.jpg);
 	background-size:100% 50%;
 	position:absolute;
 	top:0px;
+	//背景循环滚动
 	transform:translateY(-50%);
 	-webkit-transform:translateY(-50%);
 	-moz-transform:translateY(-50%);
@@ -133,12 +136,12 @@ to {
 <body>
 	<div class="game">
 		<div id="menu">
-		<span class="menuItem" id="gs-start">游戏开始</span><br><br>
-		<span class="menuItem">最高属性</span><br><br>
-		<span class="menuItem">超神属性</span><br><br>
-		<span class="menuItem">全范围</span><br><br>
-		
-		<span>游戏说明：方向键移动，按“Z”“C”键旋转飞机</span>
+		<span class="menuItem" id="gs-start">开始</span><br><br>
+		<span class="menuItem">设置</span><br><br>
+		<span class="menuItem">帮助</span><br><br>
+		<span class="menuItem">关于</span><br><br>
+		<span class="menuItem">退出</span><br><br>
+		<!--  <span>游戏说明：方向键移动，按“Z”“C”键旋转飞机</span>-->
 		</div>
         <div class="movebg"></div>
 		<canvas id='cas' width="480" height="640" >您的浏览器不支持canvas，请更新浏览器</canvas>

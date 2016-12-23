@@ -52,7 +52,7 @@
 		}else if(name==="boom"){
 			this.width = boomWidth;
 		}else if(name==="food"){
-			this.width = 40;
+			this.width = 20;
 			this.speed = 3;
 			this.kind = "LevelUP"
 		}
