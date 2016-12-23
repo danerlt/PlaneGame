@@ -104,9 +104,25 @@
 		}
 		
 		//退出
-        document.getElementById("quit").onclick = function(){
-            window.open(location, '_self').close();
-		}
+        document.getElementById("quit").onclick = function closeWebPage(){  
+ if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE  
+  if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {  
+   window.opener = null;  
+   window.close();  
+  } else {  
+  // @grant        window.close
+      window.open('', '_self', '');
+      window.close();
+  }  
+ }  
+ else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox  
+  window.location.href = 'about:blank ';  
+ } else {//close chrome;It is effective when it is only one.  
+  window.opener = null;  
+  window.open('', '_self');  
+  window.close();  
+ }  
+}  
 		
 		/**
         //最高属性		
