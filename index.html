@@ -59,8 +59,8 @@
 			badPlanNum = 30,//敌机数量
 			point = 0,
 			myplan = null,//我方飞机
-			eatfood = null,//
-			foodDate = null,//
+			eatfood = null,//道具
+			foodDate = null,//道具产生时间
 			dieNum = 0;//死亡次数
 			
         //按下键盘时将myplan对应的属性改为true
@@ -105,22 +105,40 @@
 		
 		//退出
         document.getElementById("quit").onclick = function closeWebPage(){  
- if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE  
-  if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {  
-   window.opener = null;  
-   window.close();  
-  } else {  
-  window.opener=null;window.open('','_self');window.close();
-  }  
- }  
- else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox  
-  window.location.href = 'about:blank ';  
- } else {//close chrome;It is effective when it is only one.  
-  window.opener = null;  
-  window.open('', '_self');  
-  window.close();  
- }  
-}  
+            if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE  
+                if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {  
+                    window.opener = null;  
+                    window.close();  
+                } else {  
+                        window.opener=null;window.open('','_self');window.close();
+                }  
+            }  
+            else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox  
+                window.location.href = 'about:blank ';  
+            } else {//close chrome;It is effective when it is only one.  
+                window.opener = null;  
+                window.open('', '_self');  
+                window.close();  
+            }  
+        } 
+		
+		//关于
+		document.getElementById("about").onclick = function(){
+		   // create a new div element 
+  // and give it some content 
+  var newDiv = document.createElement("div"); 
+  newDiv.style.color = "#fff";
+  var newContent = document.createTextNode("Hi there and greetings!"); 
+  newDiv.appendChild(newContent); //add the text node to the newly created div. 
+
+  // add the newly created element and its content into the DOM 
+  var currentDiv = document.getElementById("about"); 
+  //document.body.insertBefore(newDiv, currentDiv); 
+  var parentDiv = currentDiv.parentNode;
+
+// Insert the new element into the DOM before sp2
+parentDiv.insertBefore(newDiv, currentDiv);
+		}
 		
 		/**
         //最高属性		
@@ -195,6 +213,7 @@
 					menu.style.display = "block";
 					canvas.className = "showBg"
 					document.getElementById("bgm").play();
+					//点击开始隐藏菜单
 					start.addEventListener("click" , function(){
 						menu.style.display = "none";
 						_this.addElement();
