@@ -8,15 +8,15 @@
 <body>
 	<div class="game">
 		<div id="menu">
-		<span class="menuItem" id="gs-start">开始</span><br><br>
-		<span class="menuItem">设置</span><br><br>
-		<span class="menuItem">帮助</span><br><br>
-		<span class="menuItem">关于</span><br><br>
-		<span class="menuItem">退出</span><br><br>
+		<span id="start" class="menuItem">开始</span><br/><br/>
+		<span id="setting" class="menuItem">设置</span><br/><br/>
+		<span id="help" class="menuItem">帮助</span><br/><br/>
+		<span id="about" class="menuItem">关于</span><br/><br/>
+		<span id="quit" class="menuItem">退出</span><br/><br/>
 		<!--  <span>游戏说明：方向键移动，按“Z”“C”键旋转飞机</span>-->
 		</div>
         <div class="movebg"></div>
-		<canvas id='cas' width="480" height="640" >您的浏览器不支持canvas，请更新浏览器</canvas>
+		<canvas id='cas' width="480" height="640" >您的浏览器不支持canvas，请更新浏览器!</canvas>
 		<!--
 		<button id="god">最高属性</button>
 		<button id="verygod">超神属性</button>
@@ -39,8 +39,8 @@
 		var img = new Image(),
 			boomDom = document.getElementById("booms"),
 			missleDom = document.getElementById("missle"),
-			gS = document.getElementById("menu"),//获取主菜单
-			gss = document.getElementById("gs-start");//获取开始游戏
+			menu = document.getElementById("menu"),//获取主菜单
+			gss = document.getElementById("start");//获取开始游戏
 			
         //获取requestAnimationFrame
 		window.RAF = (function(){
@@ -102,7 +102,13 @@
 				break;
 			}
 		}
-        
+		
+		//退出
+        document.getElementById("quit").onclick = function(){
+		    alter("您确定要退出吗？");
+			window.close();
+		}
+		
 		/**
         //最高属性		
 		document.getElementById("god").onclick = function(){
@@ -173,11 +179,11 @@
 			init:function(){
 				var _this = this;
 				this.loading = new Loading(datas , canvas , function(){
-					gS.style.display = "block";
+					menu.style.display = "block";
 					canvas.className = "showBg"
 					document.getElementById("bgm").play();
 					gss.addEventListener("click" , function(){
-						gS.style.display = "none";
+						menu.style.display = "none";
 						_this.addElement();
 					},false)
 				});
@@ -236,7 +242,7 @@
 						myplan.visible = true;
 						myplan.left = canvas.width/2;
 						myplan.top = canvas.height-(planSize().h/2+10);
-//						myplan.fireLevel = 1;
+						myplan.fireLevel = 1;
                         myplan.rotateAngle=0;
                         myplan.god = true;
                         setTimeout(function(){
@@ -344,7 +350,7 @@
 							if(createFood&&!eatfood.visible){
 								eatfood.left = Math.random()*canvas.width-60+30;
 								eatfood.top = -30;
-								eatfood.kind = Math.random()>0.7?"LevelUP":(Math.random()>0.5?"SpeedUP":"God");
+								eatfood.kind = Math.random()>0.1?"LevelUP":(Math.random()>0.5?"SpeedUP":"God");
 								eatfood.visible = true;
 							}
 							foodDate = nowFoodDate;

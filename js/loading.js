@@ -5,11 +5,11 @@ var Loading = function(){
 		this.canvas = canvas;
 		this.x = this.canvas.width/2;
 		this.y = this.canvas.height/2;
-		this.r = 80;
-		this.elew = 10;
+		this.r = 80;//加载半径
+		this.elew = 10;//圆环宽度
 		this.angle = 0;
 		this.percent = 0;
-		this.writePercent = 0;
+		this.writePercent = 0;//百分比
 		this.callback = callback;
 		this.loadImg(datas);
 	}

@@ -280,7 +280,10 @@
 			ctx.font="15px 微软雅黑"
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
+			var img = new Image();
+			img.src =  "image/11.png"
 			ctx.fillText(sprite.kind , sprite.left , sprite.top);
+			ctx.drawImage(img , sprite.left ,sprite.top);
 		}
 	}
 
@@ -300,7 +303,7 @@
 		paint:function(sprite){
 			if(sprite.isgood){
 				var img = new Image();
-				img.src="../PlaneGame/image/plasma.png"
+				img.src="image/plasma.png"
 				ctx.drawImage(img , -missleWidth/2+1 , -missleHeight/2+1 , missleWidth , missleHeight);
 			}else {
 				ctx.beginPath();
@@ -381,7 +384,7 @@
 	W.badPlanPainter = {
 		paint:function(sprite){
 			var img = new Image();
-			img.src="../PlaneGame/image/ship.png"
+			img.src="image/ship.png"
 			switch(sprite.badKind){
 				case 1:ctx.drawImage(img , 96 , 0 , planWidth , planWidth , -planWidth/2 , -planHeight/2 , planWidth , planWidth);
 				break;
