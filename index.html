@@ -8,12 +8,12 @@
 <body>
 	<div class="game">
 		<div id="menu">
-		<span id="start" class="menuItem">开始</span><br/><br/>
-		<span id="setting" class="menuItem">设置</span><br/><br/>
-		<span id="help" class="menuItem">帮助</span><br/><br/>
-		<span id="about" class="menuItem">关于</span><br/><br/>
-		<span id="quit" class="menuItem">退出</span><br/><br/>
-		<!--  <span>游戏说明：方向键移动，按“Z”“C”键旋转飞机</span>-->
+		  <br/><br/>
+		  <span id="start" class="menuItem">开始</span><br/><br/>
+		  <span id="setting" class="menuItem">设置</span><br/><br/>
+		  <span id="help" class="menuItem">帮助</span><br/><br/>
+		  <span id="about" class="menuItem">关于</span><br/><br/>
+		  <span id="quit" class="menuItem">退出</span><br/><br/>
 		</div>
         <div class="movebg"></div>
 		<canvas id='cas' width="480" height="640" >您的浏览器不支持canvas，请更新浏览器!</canvas>
@@ -105,8 +105,7 @@
 		
 		//退出
         document.getElementById("quit").onclick = function(){
-		    alter("您确定要退出吗？");
-			window.close();
+            window.open(location, '_self').close();
 		}
 		
 		/**

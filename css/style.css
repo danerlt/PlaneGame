@@ -22,7 +22,7 @@ body {
 .game {
 	width:480px;
 	margin:auto;
-	height:640px;
+	height:640;
 	position:relative;
 }
 .movebg {
@@ -52,7 +52,7 @@ body {
 }
 #menu {
 	position:absolute;
-	top:110px;
+	top:50px;
 	width:100%;
 	height:500px;
 	text-align:center;
@@ -71,7 +71,7 @@ body {
 	border-radius:10px;
 	border:5px solid #FFF;
 }
-#menu #gs-start:hover {
+.menuItem:hover{
 	color:#f00;
 }
 .showSomething {
