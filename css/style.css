@@ -1,10 +1,10 @@
 *{
-	  padding:0px;
-	  margin:0px;
-	}
-	body {
-	  overflow:hidden;
-    }
+	padding:0px;
+	margin:0px;
+}
+body {
+    overflow:hidden;
+}
 #cas {
 	display:block;
 	border:1px solid;

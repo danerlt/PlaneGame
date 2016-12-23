@@ -1,19 +1,19 @@
 var datas = [
-	"../PlaneGame/image/explosion.png",
-	"../PlaneGame/image/plasma.png",
-	"../PlaneGame/image/ship.png",
-    "../PlaneGame/image/bg.jpg",
-    "../PlaneGame/mp3/bgm.mp3",
-	"../PlaneGame/mp3/boom.mp3",
-	"../PlaneGame/mp3/boom.mp3",
-	"../PlaneGame/mp3/boom.mp3",
-	"../PlaneGame/mp3/boom.mp3",
-	"../PlaneGame/mp3/boom.mp3",
-	"../PlaneGame/mp3/shot.mp3",
-	"../PlaneGame/mp3/shot.mp3",
-	"../PlaneGame/mp3/shot.mp3",
-	"../PlaneGame/mp3/shot.mp3",
-	"../PlaneGame/mp3/shot.mp3"
+	"image/explosion.png",
+	"image/plasma.png",
+	"image/ship.png",
+    "image/bg.jpg",
+    "mp3/bgm.mp3",
+	"mp3/boom.mp3",
+	"mp3/boom.mp3",
+	"mp3/boom.mp3",
+	"mp3/boom.mp3",
+	"mp3/boom.mp3",
+	"mp3/shot.mp3",
+	"mp3/shot.mp3",
+	"mp3/shot.mp3",
+	"mp3/shot.mp3",
+	"mp3/shot.mp3"
 ]
 
 var explosionCells = [
