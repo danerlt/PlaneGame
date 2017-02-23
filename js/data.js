@@ -2,7 +2,7 @@ var datas = [
 	"image/explosion.png",
 	"image/plasma.png",
 	"image/ship.png",
-    "image/bg.jpg",
+    "image/bg0.jpg",
     "mp3/bgm.mp3",
 	"mp3/boom.mp3",
 	"mp3/boom.mp3",

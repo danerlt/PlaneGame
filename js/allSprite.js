@@ -281,7 +281,6 @@
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
 			var img = new Image();
-			img.src =  "image/11.png"
 			ctx.fillText(sprite.kind , sprite.left , sprite.top);
 			ctx.drawImage(img , sprite.left ,sprite.top);
 		}

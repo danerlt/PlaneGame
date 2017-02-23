@@ -44,7 +44,6 @@ var Loading = function(){
 			function li(){
 				if(datas[dataIndex].indexOf("mp3")>=0){
 					var audio = document.createElement("audio");
-					console.log('ss')
 					
 					audio.preload = "auto";
 					audio.src = datas[dataIndex];
@@ -63,7 +62,6 @@ var Loading = function(){
 							_this.percent = parseInt(dataIndex/datas.length*100);
 							li.call(_this);
 						}
-						console.log(document.body.innerHTML);
 						document.body.appendChild(audio);
 					}
 				}else {

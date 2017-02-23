@@ -1,414 +1,565 @@
 <!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/style.css">
-	<title>飞机游戏</title>
-</head>
-<body>
-	<div class="game">
-		<div id="menu">
-		  <br/><br/>
-		  <span id="start" class="menuItem">开始</span><br/><br/>
-		  <span id="setting" class="menuItem">设置</span><br/><br/>
-		  <span id="help" class="menuItem">帮助</span><br/><br/>
-		  <span id="about" class="menuItem">关于</span><br/><br/>
-		  <span id="quit" class="menuItem">退出</span><br/><br/>
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css">
+		<title>飞机游戏</title>
+	</head>
+
+	<body>
+		<div class="game">
+			<div id="menu">
+				<br/><br/>
+				<span id="start" class="menuItem">开始</span><br/><br/>
+				<span id="setting" class="menuItem">设置</span><br/><br/>
+				<span id="help" class="menuItem">帮助</span><br/><br/>
+				<span id="about" class="menuItem">关于</span><br/><br/>
+				<span id="quit" class="menuItem">退出</span><br/><br/>
+			</div>
+			<div id="movebg"></div>
+			<span id="back" class="back">返回</span>
+			<canvas id='cas' width="480" height="640">您的浏览器不支持canvas，请更新浏览器!</canvas>
+			<!--设置功能开始 -->
+			<div id="menu_setting">
+				<br /><br/>
+			    <span id="setting_lever" class="menuItem">游戏难度选择</span><br/><br/>
+			    <span id="setting_radio" class="menuItem">游戏音量调整</span><br/><br/>
+			    <span id="setting_bgimage" class="menuItem">游戏背景选择</span><br/><br/>
+			    <span id="setting_return" class="menuItem">返回主菜单</span><br/><br/>
+			</div>
+			<div id="menu_lever">
+			  <br /><br/>
+			  <span id="one_lever" class="menuItem">简单</span><br/><br/>
+			  <span id="two_lever" class="menuItem">一般</span><br/><br/>
+			  <span id="three_lever" class="menuItem">困难</span><br/><br/>
+			  <span id="four_lever" class="menuItem">地狱</span><br/><br/>
+			  <span id="lever_return" class="menuItem">返回上一页</span><br/><br/>
+			 </div>
+			
+			<div id="menu_music">
+			  <br /><br/>
+			  <span id="shutdown" class="menuItem">静音</span><br/><br/>
+			  <span id="turn_up" class="menuItem">正常</span><br/><br/>
+			  <span id="music_return" class="menuItem">返回上一页</span><br/><br/>
+			</div>
+			<!--设置功能结束-->
+			<!--帮助功能开始-->
+            <div id="helpDiv" class="helpDiv">
+				<span >这是一款飞机射击类型的休闲小游戏，当你击落敌方飞机时，会随机掉落道具（子弹升级，射击加速，护盾保护）。然而随着游戏时间的增长，敌方飞机的血量会越来越高，所以合理捡取道具升级自己的飞机是必要的。按方向键:移动 ，按“Z”“C”键旋转飞机</span><br/><br/>
+				<span id="help_return" class="menuItem">返回主菜单</span><br/><br/>
+			</div>
+			<!--帮助功能结束-->
+			<!--关于功能开始-->
+			<div id="aboutDiv" class="aboutDiv">
+				<span>游戏设计人员：   </span><br/><br/>
+				<span>2014131219李&nbsp;&nbsp;&nbsp;滔 </span><br/>
+				<span>2014131218廖清林 </span><br/>
+				<span>2014131215刘云峰  </span><br/>
+				<span>2014131217王德平  </span><br/>
+				<span>2014131204王淋藜 </span><br/>
+                <br/>
+                <span id="about_return" class="menuItem">返回主菜单</span>
+			</div>
+			<!--关于功能结束-->
+		</div>	
+
+		<div class="showSomething">
+			<div id="booms">爆炸使用情况(已使用/存储总量)：</div>
+			<div id="missle">子弹使用情况(已使用/存储总量)：</div>
 		</div>
-        <div class="movebg"></div>
-		<canvas id='cas' width="480" height="640" >您的浏览器不支持canvas，请更新浏览器!</canvas>
-		<!--
-		<button id="god">最高属性</button>
-		<button id="verygod">超神属性</button>
-		<button id="pretygod">全范围</button>
-		<button id="nogod">OMG！！！！</button>
-		-->
-	</div>
-	<div class="showSomething">
-		<div id="booms">爆炸使用情况(已使用/存储总量)：</div>
-		<div id="missle">子弹使用情况(已使用/存储总量)：</div>
-	</div>
-	<script src="js/data.js"></script>
-	<script src="js/loading.js"></script>
-	<script src="js/allSprite.js"></script>
-	<script>
-		var canvas = document.getElementById("cas");
-		canvas.height = window.innerHeight;
-		var ctx = canvas.getContext('2d');
+		<script src="js/data.js"></script>
+		<script src="js/loading.js"></script>
+		<script src="js/allSprite.js"></script>
+		<script>
+			var canvas = document.getElementById("cas");
+			canvas.height = window.innerHeight;
+			var ctx = canvas.getContext('2d');
 
-		var img = new Image(),
-			boomDom = document.getElementById("booms"),
-			missleDom = document.getElementById("missle"),
-			menu = document.getElementById("menu"),//获取主菜单
-			start = document.getElementById("start");//获取开始游戏
-			
-        //获取requestAnimationFrame
-		window.RAF = (function(){
-			return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {window.setTimeout(callback, 1000 / 60); };
-		})();
+			var img = new Image(),
+				boomDom = document.getElementById("booms"),
+				missleDom = document.getElementById("missle"),
+				menu = document.getElementById("menu"), //获取主菜单
+				start = document.getElementById("start"),//获取开始游戏
+				setting = document.getElementById("setting"), //获取设置
+				help = document.getElementById("help"), //获取帮助
+				about = document.getElementById("about"), //获取关于
+				back = document.getElementById("back"),//获取返回
+				
+				menu_setting =document.getElementById("menu_setting"),//获取设置菜单
+		    	menu_lever = document.getElementById("menu_lever"),//获取难度等级选择菜单
+			    menu_music = document.getElementById("menu_music");//获取声音设置菜单
+			    
+			    
+			    var globalID ;
+			//获取requestAnimationFrame
+			window.RAF = (function() {
+				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+					window.setTimeout(callback, 1000 / 60);
+				};
+			})();
 
-		Array.prototype.foreach = function(callback){
-			for(var i=0;i<this.length;i++){
-				callback.apply(this[i] , [i]);
-			}
-		}
+			//      var CAF = (function(){
+			//      	return window.cancelAnimationFrame ||window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || widow.oCancelRequestAnimationFrame || window.msCancelRequestAnimationFrame ;
+			//      })();	
 
-		var sprites = [],//精灵表
-			missles = [],//子弹
-			booms = [],//爆炸
-			badPlanNum = 30,//敌机数量
-			point = 0,
-			myplan = null,//我方飞机
-			eatfood = null,//道具
-			foodDate = null,//道具产生时间
-			dieNum = 0;//死亡次数
-			
-        //按下键盘时将myplan对应的属性改为true
-		window.onkeydown = function(event){
-			switch(event.keyCode){
-                case 88:myplan.fire = true;//x键 
-                break;
-				case 90:myplan.rotateLeft=true;//Z键 向左旋转
-				break;
-				case 67:myplan.rotateRight=true;//C键 向右旋转
-				break;
-				case 37:myplan.toLeft = true;//左
-				break;
-				case 38:myplan.toTop = true;//上
-				break;
-				case 39:myplan.toRight = true;//右
-				break;
-				case 40:myplan.toBottom = true;//下
-				break;
+			Array.prototype.foreach = function(callback) {
+				for(var i = 0; i < this.length; i++) {
+					callback.apply(this[i], [i]);
+				}
 			}
-		}
-        
-		//松开键盘时将myplan对应的属性改为false
-		window.onkeyup = function(event){
-			switch(event.keyCode){
-                    case 88:myplan.fire = false;
-                    break;
-				case 90:myplan.rotateLeft=false;
-				break;
-				case 67:myplan.rotateRight=false;
-				break;
-				case 37:myplan.toLeft = false;
-				break;
-				case 38:myplan.toTop = false;
-				break;
-				case 39:myplan.toRight = false;
-				break;
-				case 40:myplan.toBottom = false;
-				break;
-			}
-		}
-		
-		//退出
-        document.getElementById("quit").onclick = function closeWebPage(){  
-            if (navigator.userAgent.indexOf("MSIE") > 0) {//close IE  
-                if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {  
-                    window.opener = null;  
-                    window.close();  
-                } else {  
-                        window.opener=null;window.open('','_self');window.close();
-                }  
-            }  
-            else if (navigator.userAgent.indexOf("Firefox") > 0) {//close firefox  
-                window.location.href = 'about:blank ';  
-            } else {//close chrome;It is effective when it is only one.  
-                window.opener = null;  
-                window.open('', '_self');  
-                window.close();  
-            }  
-        } 
-		
-		//关于
-		document.getElementById("about").onclick = function(){
-		   // create a new div element 
-  // and give it some content 
-  var newDiv = document.createElement("div"); 
-  newDiv.style.color = "#fff";
-  var newContent = document.createTextNode("Hi there and greetings!"); 
-  newDiv.appendChild(newContent); //add the text node to the newly created div. 
 
-  // add the newly created element and its content into the DOM 
-  var currentDiv = document.getElementById("about"); 
-  //document.body.insertBefore(newDiv, currentDiv); 
-  var parentDiv = currentDiv.parentNode;
+			var sprites = [], //精灵表
+				missles = [], //子弹
+				booms = [], //爆炸
+				badPlanNum = 30, //敌机数量
+				point = 0,
+				myplan = null, //我方飞机
+				eatfood = null, //道具
+				foodDate = null, //道具产生时间
+				dieNum = 0; //死亡次数
+                bgmisplay = true;//背景音乐 为true时播放，为false时不播放
+			//按下键盘时将myplan对应的属性改为true
+			window.onkeydown = function(event) {
+				switch(event.keyCode) {
+					case 88:
+						myplan.fire = true; //x键 
+						break;
+					case 90:
+						myplan.rotateLeft = true; //Z键 向左旋转
+						break;
+					case 67:
+						myplan.rotateRight = true; //C键 向右旋转
+						break;
+					case 37:
+						myplan.toLeft = true; //左
+						break;
+					case 38:
+						myplan.toTop = true; //上
+						break;
+					case 39:
+						myplan.toRight = true; //右
+						break;
+					case 40:
+						myplan.toBottom = true; //下
+						break;
+				}
+			}
 
-// Insert the new element into the DOM before sp2
-parentDiv.insertBefore(newDiv, currentDiv);
-		}
-		
-		/**
-        //最高属性		
-		document.getElementById("god").onclick = function(){
-			if(myplan){
-				myplan.god = true;
-				myplan.fireLevel = 4;
-				myplan.firePerFrame = 10;
+			//松开键盘时将myplan对应的属性改为false
+			window.onkeyup = function(event) {
+				switch(event.keyCode) {
+					case 88:
+						myplan.fire = false;
+						break;
+					case 90:
+						myplan.rotateLeft = false;
+						break;
+					case 67:
+						myplan.rotateRight = false;
+						break;
+					case 37:
+						myplan.toLeft = false;
+						break;
+					case 38:
+						myplan.toTop = false;
+						break;
+					case 39:
+						myplan.toRight = false;
+						break;
+					case 40:
+						myplan.toBottom = false;
+						break;
+				}
 			}
-		}
-		
-		//超神属性
-		document.getElementById("verygod").onclick = function(){
-			if(myplan){
-				myplan.god = true;
-				myplan.fireLevel = 10;
-				myplan.firePerFrame = 10;
-			}
-		}
-		
-		//
-		document.getElementById("pretygod").onclick = function(){
-			if(myplan){
-				myplan.god = true;
-				myplan.fireLevel = 40;
-				myplan.firePerFrame = 50;
-			}
-		}
-		
-		//
-		document.getElementById("nogod").onclick = function(){
-			if(myplan){
-				myplan.god = true;
-				myplan.fireLevel = 40;
-				myplan.firePerFrame = 5;
-			}
-		}
-         */
-	    //飞机爆炸            	      
-		function boom(plan){
-			for(var j=0;j<booms.length;j++){
-				if(!booms[j].visible){
-					booms[j].left = plan.left;
-					booms[j].top = plan.top;
-					booms[j].visible = true;
 
-					var audio = document.getElementsByTagName("audio");
-					for(var i=0;i<audio.length;i++){
-						if(audio[i].src.indexOf("boom")>=0&&(audio[i].paused||audio[i].ended)){
-							audio[i].play();
-							break;
-						}
+			//退出
+			document.getElementById("quit").onclick = function closeWebPage() {
+				if(navigator.userAgent.indexOf("MSIE") > 0) { //close IE  
+					if(navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+						window.opener = null;
+						window.close();
+					} else {
+						window.opener = null;
+						window.open('', '_self');
+						window.close();
 					}
-					break;
+				} else if(navigator.userAgent.indexOf("Firefox") > 0) { //close firefox  
+					window.location.href = 'about:blank ';
+				} else { //close chrome;It is effective when it is only one.  
+					window.opener = null;
+					window.open('', '_self');
+					window.close();
 				}
 			}
-		}
-        
-        /**
-		*  舞台
-		*  init() 
-		*  addElement() 
-		*  myplanReborn()
-		*  update()
-		*  loop()
-		*  start()
-		*/
-		var stage = {
-			init:function(){
-				var _this = this;
-				this.loading = new Loading(datas , canvas , function(){
-					menu.style.display = "block";
-					canvas.className = "showBg"
-					document.getElementById("bgm").play();
-					//点击开始隐藏菜单
-					start.addEventListener("click" , function(){
-						menu.style.display = "none";
-						_this.addElement();
-					},false)
-				});
-			},
+		
+			//飞机爆炸            	      
+			function boom(plan) {
+				for(var j = 0; j < booms.length; j++) {
+					if(!booms[j].visible) {
+						booms[j].left = plan.left;
+						booms[j].top = plan.top;
+						booms[j].visible = true;
 
-			addElement:function(){
-				for(var i=0;i<50;i++){
-					var x = Math.random()*canvas.width;
-					var y = Math.random()*2*canvas.height - canvas.height;
-					var star = new Sprite("star" , starPainter , starBehavior);
-					star.top = y;
-					star.left = x;
-					sprites.push(star);
+						var audio = document.getElementsByTagName("audio");
+						for(var i = 0; i < audio.length; i++) {
+							if(audio[i].src.indexOf("boom") >= 0 && (audio[i].paused || audio[i].ended)) {
+								audio[i].play();
+								break;
+							}
+						}
+						break;
+					}
 				}
+			}
 
-				for(var i=0;i<badPlanNum;i++){
-					var x = Math.random()*(canvas.width-2*planSize().w)+planSize().w;
-					var y = Math.random()*canvas.height - canvas.height;
-					var badPlan = new Sprite("badPlan" , badPlanPainter , badPlanBehavior);
-					badPlan.top = y;
-					badPlan.left = x;
-					sprites.push(badPlan);
-				}
+			/**
+			 *  舞台
+			 *  init() 
+			 *  addElement() 
+			 *  myplanReborn()
+			 *  update()
+			 *  loop()
+			 *  start()
+			 */
+			//var sttop;
+			var stage = {
+				init: function() {
+					var _this = this; //解决this历史遗留问题
+					this.loading = new Loading(datas, canvas, function() {
+						menu.style.display = "block";
+						canvas.className = "showBg"
+						if(bgmisplay === true){
+						    document.getElementById("bgm").play();
+						}
+						//点击开始按钮    隐藏菜单
+						start.addEventListener("click", function() {
+							menu.style.display = "none";
+							back.style.display = "inline";
+							_this.addElement();
+						}, false);
+						//点击设置信息  
+						setting.addEventListener("click", function() {
+						    menu_setting.style.display ="block";
+						    menu.style.display ="none" ;
+							//难度选择
+							document.getElementById("setting_lever").onclick = function() {
+								menu_setting.style.display = "none";
+								menu_lever.style.display = "block";
+								//简单
+								one_lever.addEventListener("click",function(){
+									badPlanNum = 15;
+									menu_lever.style.display = "none";
+									back.style.display = "inline";
+									_this.addElement();
+								},false);
+								//一般
+								two_lever.addEventListener("click",function(){
+									badPlanNum = 20;
+									menu_lever.style.display = "none";
+									back.style.display = "inline";
+									_this.addElement();
+								},false);
+			                    //困难
+			                    three_lever.addEventListener("click",function(){
+									badPlanNum = 40;
+									menu_lever.style.display = "none";
+									back.style.display = "inline";
+									_this.addElement();
+								},false);
+			                    //地狱
+			                     four_lever.addEventListener("click",function(){
+									badPlanNum = 50;
+									menu_lever.style.display = "none";
+									back.style.display = "inline";
+									_this.addElement();
+								},false);
+							}
+							//背景音量设置
+							document.getElementById("setting_radio").onclick = function() {
+									menu.style.display = "none";
+									menu_setting.style.display = "none";
+									menu_music.style.display = "block";
+								}
+							//静音
+							document.getElementById("shutdown").onclick = function() {
+								    bgmisplay = false;
+									document.getElementById("bgm").pause();
+								}
+							//正常
+							document.getElementById("turn_up").onclick = function() {
+								bgmisplay = true;
+								document.getElementById("bgm").play();
+							}
 
-				for(var i=0;i<400;i++){
-					var missle = new Sprite("missle" , misslePainter , missleBehavior);
-					missle.visible = false;
-					missles.push(missle);
-				}
+							//返回上一页_难度等级设置
+							document.getElementById("lever_return").onclick = function() {
+									menu_lever.style.display = "none";
+									menu_music.style.display = "none";
+									menu_setting.style.display = "block";
+								}
+							//返回上一页_背景声音设置
+							document.getElementById("music_return").onclick = function() {
+								menu_music.style.display = "none";
+								menu_setting.style.display = "block";
+							}
 
-				for(var i=0;i<badPlanNum;i++){
-					var img = new Image();
-					img.src = "image/explosion.png";
-					var boom = new Sprite("boom" , new SpriteSheetPainter(explosionCells , false , function(){
-						this.visible = false;
-					} , img));
-					boom.visible = false;
-					booms.push(boom);
-				}
+							//返回主菜单
+							document.getElementById("setting_return").onclick = function() {
+								menu_setting.style.display = "none";
+								menu_music.style.display = "none";
+								menu.style.display = "block";
+							}
 
-				eatfood = new Sprite("food" , foodPainter , foodBehavior);
-				eatfood.left = Math.random()*canvas.width-60+30;
-				eatfood.top = -30;
-				eatfood.visible = false;
-				sprites.push(eatfood)
+							//设置背景图
+							var i = 0;
+							document.getElementById("setting_bgimage").onclick = function() {
+								i = i + 1;
+								var imgC = document.getElementById("movebg");
+								imgC.style.backgroundImage = "url(image/bg" + i + ".jpg)";
+								if(i >= 3) {
+									i = 0;
+								}
+							}
+						}, false);
+						//点击帮助按钮    显示帮助信息
+						help.addEventListener("click", function() {
+							menu.style.display = "none";
+							helpDiv.style.display = "block";
+							aboutDiv.style.display = "none";
+							document.getElementById("help_return").onclick = function(){
+								menu.style.display = "block";
+								helpDiv.style.display = "none";
+							};
+						}, false);
+						//点击关于按钮   显示关于信息
+						about.addEventListener("click", function() {
+							menu.style.display = "none";
+							helpDiv.style.display = "none";
+							aboutDiv.style.display = "block";
+							document.getElementById("about_return").onclick = function(){
+								menu.style.display = "block";
+								aboutDiv.style.display = "none";
+							};
+						}, false);
+						//点击退出按钮
+						back.addEventListener("click", function() {
+							menu.style.display = "block";
+							canvas.className = "showBg"
+     						back.style.display = "none";
+							helpDiv.style.display = "none";
+							aboutDiv.style.display = "none";
+							window.open("index.html",'_self') 
+						}, false);
+					});
 
-				img.src = "image/ship.png"
-				myplan = new Sprite("plan" , new controllSpriteSheetPainter(planCells , img) , planBehavior);
-				myplan.left = canvas.width/2;
-				myplan.top = canvas.height-(planSize().h/2+10);
-				sprites.push(myplan);
-			},
-            
-            myplanReborn:function(myplan){
-					setTimeout(function(){
-						myplan.visible = true;
-						myplan.left = canvas.width/2;
-						myplan.top = canvas.height-(planSize().h/2+10);
-						myplan.fireLevel = 1;
-                        myplan.rotateAngle=0;
-                        myplan.god = true;
-                        setTimeout(function(){
-                        	myplan.god = false;
-                        } , 5000)
-					} , 1000)
 				},
 
-			update:function(){
-                var stage = this;
-				var boomnum = 0,misslenum = 0;
+				addElement: function() {
+					for(var i = 0; i < 50; i++) {
+						var x = Math.random() * canvas.width;
+						var y = Math.random() * 2 * canvas.height - canvas.height;
+						var star = new Sprite("star", starPainter, starBehavior);
+						star.top = y;
+						star.left = x;
+						sprites.push(star);
+					}
 
-				this.loading.loop();
-				if(this.loading.getComplete()){
-					ctx.clearRect(0,0,canvas.width,canvas.height);
-				}
-				missles.foreach(function(){
-					var missle = this;
-					sprites.foreach(function(){
-						var bp = this;
-						if(bp.name==="badPlan"&&bp.visible&&missle.visible){
-							var juli = Math.sqrt(Math.pow(missle.left-bp.left , 2)+Math.pow(missle.top-bp.top , 2));
-							if(juli<(planSize().w/2+missle.width/2) && missle.isgood){
-								missle.visible = false;
-								bp.blood-=50;
-								if(bp.blood<=0){
-									bp.visible = false;
-									point += bp.badKind;
-									boom(bp)
+					for(var i = 0; i < badPlanNum; i++) {
+						var x = Math.random() * (canvas.width - 2 * planSize().w) + planSize().w;
+						var y = Math.random() * canvas.height - canvas.height;
+						var badPlan = new Sprite("badPlan", badPlanPainter, badPlanBehavior);
+						badPlan.top = y;
+						badPlan.left = x;
+						sprites.push(badPlan);
+					}
+
+					for(var i = 0; i < 400; i++) {
+						var missle = new Sprite("missle", misslePainter, missleBehavior);
+						missle.visible = false;
+						missles.push(missle);
+					}
+
+					for(var i = 0; i < badPlanNum; i++) {
+						var img = new Image();
+						img.src = "image/explosion.png";
+						var boom = new Sprite("boom", new SpriteSheetPainter(explosionCells, false, function() {
+							this.visible = false;
+						}, img));
+						boom.visible = false;
+						booms.push(boom);
+					}
+
+					eatfood = new Sprite("food", foodPainter, foodBehavior);
+					eatfood.left = Math.random() * canvas.width - 60 + 30;
+					eatfood.top = -30;
+					eatfood.visible = false;
+					sprites.push(eatfood);
+
+					img.src = "image/ship.png"
+					myplan = new Sprite("plan", new controllSpriteSheetPainter(planCells, img), planBehavior);
+					myplan.left = canvas.width / 2;
+					myplan.top = canvas.height - (planSize().h / 2 + 10);
+					sprites.push(myplan);
+				},
+
+				myplanReborn: function(myplan) {
+					setTimeout(function() {
+						myplan.visible = true;
+						myplan.left = canvas.width / 2;
+						myplan.top = canvas.height - (planSize().h / 2 + 10);
+						myplan.fireLevel = 1;
+						myplan.firePerFrame = 40;
+						myplan.rotateAngle = 0;
+						myplan.god = true;
+						setTimeout(function() {
+							myplan.god = false;
+						}, 5000)
+					}, 1000)
+				},
+
+				update: function() {
+					var stage = this;
+					var boomnum = 0,
+						misslenum = 0;
+
+					this.loading.loop();
+					if(this.loading.getComplete()) {
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+					}
+					missles.foreach(function() {
+						var missle = this;
+						sprites.foreach(function() {
+							var bp = this;
+							if(bp.name === "badPlan" && bp.visible && missle.visible) {
+								var juli = Math.sqrt(Math.pow(missle.left - bp.left, 2) + Math.pow(missle.top - bp.top, 2));
+								if(juli < (planSize().w / 2 + missle.width / 2) && missle.isgood) {
+									missle.visible = false;
+									bp.blood -= 50;
+									if(bp.blood <= 0) {
+										bp.visible = false;
+										point += bp.badKind;
+										boom(bp)
+									}
+								}
+							}
+						});
+
+						if(missle.visible) {
+							if(!missle.isgood && myplan.visible && !myplan.god) {
+								var juli = Math.sqrt(Math.pow(missle.left - myplan.left, 2) + Math.pow(missle.top - myplan.top, 2));
+								if(juli < (planSize().w / 2 + 3)) {
+									myplan.visible = false;
+									dieNum++;
+									missle.visible = false;
+									boom(myplan)
+									stage.myplanReborn(myplan)
+								}
+							}
+							misslenum++;
+							this.paint();
+						}
+					});
+
+					booms.foreach(function() {
+						if(this.visible) {
+							boomnum++;
+							this.paint();
+						}
+					})
+
+					sprites.foreach(function() {
+						if(this.name === "food" && this.visible) {
+							var tjuli = Math.sqrt(Math.pow(this.left - myplan.left, 2) + Math.pow(this.top - myplan.top, 2));
+							if(tjuli < (myplan.width / 2 + this.width / 2)) {
+								this.visible = false;
+								switch(this.kind) {
+									case "LevelUP":
+										myplan.fireLevel = myplan.fireLevel >= 100 ? myplan.fireLevel : myplan.fireLevel + 1;
+										break;
+									case "SpeedUP":
+										myplan.firePerFrame = myplan.firePerFrame <= 10 ? 10 : myplan.firePerFrame - 10;
+										break;
+									case "God":
+										myplan.god = true;
+										//setTimeout(function() {
+										//	myplan.god = false
+										//}, 5000);
+										break;
+									default:
+										break;
 								}
 							}
 						}
-					});
-					
-					if(missle.visible){
-						if(!missle.isgood&&myplan.visible&&!myplan.god){
-							var juli = Math.sqrt(Math.pow(missle.left-myplan.left , 2)+Math.pow(missle.top-myplan.top , 2));
-							if(juli<(planSize().w/2+3)){
+						if(this.name === "badPlan" && myplan.visible && !myplan.god) {
+							var juli = Math.sqrt(Math.pow(this.left - myplan.left, 2) + Math.pow(this.top - myplan.top, 2));
+							if(juli < planSize().w) {
 								myplan.visible = false;
 								dieNum++;
-								missle.visible = false;
+								this.visible = false;
+								boom(this)
 								boom(myplan)
-								stage.myplanReborn(myplan)
+								stage.myplanReborn(myplan);
 							}
 						}
-						misslenum++;
+
 						this.paint();
-					}
-				});
+					});
 
-				booms.foreach(function(){
-					if(this.visible){
-						boomnum++;
-						this.paint();
-					}
-				})
+					if(myplan) {
+						ctx.fillStyle = "#FFF"
+						ctx.font = "14px 微软雅黑";
+						ctx.textAlign = "left";
+						ctx.textBaseline = "middle";
+						ctx.fillText("Level:" + (myplan.fireLevel === 4 ? "Max" : myplan.fireLevel) + "        Speed:" + ((80 - myplan.firePerFrame) === 70 ? "Max" : (80 - myplan.firePerFrame)), 0, canvas.height - 18);
+						ctx.fillText("Points:" + point + "     死亡次数:" + dieNum, 0, 18);
 
-				sprites.foreach(function(){
-					if(this.name==="food"&&this.visible){
-						var tjuli = Math.sqrt(Math.pow(this.left-myplan.left , 2)+Math.pow(this.top-myplan.top , 2));
-						if(tjuli<(myplan.width/2+this.width/2)){
-							this.visible = false;
-							switch(this.kind){
-								case "LevelUP":myplan.fireLevel = myplan.fireLevel>=4?myplan.fireLevel:myplan.fireLevel+1;
-								break;
-								case "SpeedUP":myplan.firePerFrame = myplan.firePerFrame<=10?10:myplan.firePerFrame-10;
-								break;
-                                case "God":myplan.god = true;setTimeout(function(){myplan.god = false} , 5000);
-								break;
-								default:break;
+						if(foodDate === null) {
+							foodDate = new Date();
+						} else {
+							var nowFoodDate = new Date();
+							//每个一秒产生一个道具
+							if(nowFoodDate - foodDate > 1000) {
+								var createFood = Math.random() < 0.5 ? true : false; //百分之五十的概率产生道具
+								if(createFood && !eatfood.visible) {
+									eatfood.left = Math.random() * canvas.width - 60 + 30;
+									eatfood.top = -30;
+									//子弹升级的概率为0.9
+									//子弹加速的概率为0.05
+									//保护罩的概率为0.05
+									eatfood.kind = Math.random() > 0.5 ? "LevelUP" : (Math.random() > 0.5 ? "SpeedUP" : "God");
+									eatfood.visible = true;
+								}
+								foodDate = nowFoodDate;
 							}
 						}
 					}
-					if(this.name==="badPlan"&&myplan.visible&&!myplan.god){
-						var juli = Math.sqrt(Math.pow(this.left-myplan.left , 2)+Math.pow(this.top-myplan.top , 2));
-						if(juli<planSize().w){
-							myplan.visible = false;
-							dieNum++;
-							this.visible = false;
-							boom(this)
-							boom(myplan)
-							stage.myplanReborn(myplan);
-						}
-					}
 
-					this.paint();
-				});
+					boomDom.innerHTML = "爆炸使用率(已使用/存储总量):" + boomnum + "/" + booms.length;
+					missleDom.innerHTML = "子弹使用率(已使用/存储总量):" + misslenum + "/" + missles.length;
+					
+				},
+                ID:0,
+				loop: function() {
+					var _this = this;
+					this.update();
+					globalID = RAF(function() {
+						_this.loop();
+					});
+				},
 
-				if(myplan){
-					ctx.fillStyle="#FFF"
-					ctx.font="14px 微软雅黑";
-					ctx.textAlign = "left";
-					ctx.textBaseline = "middle";
-					ctx.fillText("Level:"+(myplan.fireLevel===4?"Max":myplan.fireLevel)+"        Speed:"+((80-myplan.firePerFrame)===70?"Max":(80-myplan.firePerFrame)) , 0 , canvas.height-18);
-					ctx.fillText("Points:"+point+"     死亡次数:"+dieNum, 0 , 18);
-					ctx.textAlign = "right";
-					ctx.fillText("Tips:按方向键:移动 ，按“Z”“C”键旋转飞机" , canvas.width-10 , 18);
-
-					if(foodDate===null){
-						foodDate = new Date();
-					}else {
-						var nowFoodDate = new Date();
-						if(nowFoodDate-foodDate>1000){
-							var createFood = Math.random()<0.5?true:false;
-							if(createFood&&!eatfood.visible){
-								eatfood.left = Math.random()*canvas.width-60+30;
-								eatfood.top = -30;
-								eatfood.kind = Math.random()>0.1?"LevelUP":(Math.random()>0.5?"SpeedUP":"God");
-								eatfood.visible = true;
-							}
-							foodDate = nowFoodDate;
-						}
-					}
-				}
+				start: function() {
+						this.init();
+						this.loop();
+				},
 				
-				boomDom.innerHTML = "爆炸使用率(已使用/存储总量):"+boomnum+"/"+booms.length;
-				missleDom.innerHTML = "子弹使用率(已使用/存储总量):"+misslenum+"/"+missles.length;
-			},
-
-			loop:function(){
-				var _this = this;
-				this.update();
-				RAF(function(){
-					_this.loop();
-				});
-			},
-
-			start:function(){
-				this.init();
-				this.loop();
+				stop: function() {
+					cancelAnimationFrame(globalID);	
+				},
 			}
-		}
 
-		stage.start();
-	</script>
-</body>
+			stage.start();
+		</script>
+	</body>
+
 </html>
